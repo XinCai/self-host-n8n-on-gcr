@@ -486,3 +486,22 @@ For more details and usage instructions, please see the `terraform/` directory i
 ---
 
 And there you have it - a fully functional n8n instance running on Google Cloud Run. You get all the benefits of self-hosting without the headache of managing servers. Your workflows run reliably, your data stays under your control, and you only pay for what you use.
+
+
+---
+australia-southeast1-docker.pkg.dev/uplifted-woods-459110-i5/n8n-repo/n8n
+
+docker push australia-southeast1-docker.pkg.dev/uplifted-woods-459110-i5/n8n-repo/n8n:latest
+docker push australia-southeast1-docker.pkg.dev/uplifted-woods-459110-i5/allie-n8n/n8n:latest
+
+
+docker tag n8nio/n8n:latest australia-southeast1-docker.pkg.dev/uplifted-woods-459110-i5/allie-n8n/n8n:latest
+
+
+docker tag my-image us-central1-docker.pkg.dev/uplifted-woods-459110-i5/quickstart-docker-repo/my-image:latest
+docker push LOCATION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:TAG
+
+---
+
+
+docker build --platform linux/amd64 -t asia-southeast1-docker.pkg.dev/uplifted-woods-459110-i5/n8n-repo/n8n:latest .
