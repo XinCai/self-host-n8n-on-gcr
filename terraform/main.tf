@@ -162,7 +162,7 @@ resource "google_cloud_run_v2_service" "n8n" {
     service_account = google_service_account.n8n_sa.email
     scaling {
       max_instance_count = var.cloud_run_max_instances # Guide uses 1
-      min_instance_count = 1
+      min_instance_count = 0
     }
     volumes {
       name = "cloudsql"
