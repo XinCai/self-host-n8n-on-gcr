@@ -24,3 +24,6 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# add hidden files
+n8n.yaml
