@@ -67,13 +67,13 @@ variable "service_account_name" {
 variable "cloud_run_cpu" {
   description = "CPU allocation for Cloud Run service."
   type        = string
-  default     = "2"
+  default     = "1"
 }
 
 variable "cloud_run_memory" {
   description = "Memory allocation for Cloud Run service."
   type        = string
-  default     = "2Gi"
+  default     = "1Gi"
 }
 
 variable "cloud_run_max_instances" {
