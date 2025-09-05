@@ -27,3 +27,4 @@ terraform.rc
 
 # add hidden files
 n8n.yaml
+n8n_yaml/
