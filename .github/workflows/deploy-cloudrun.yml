@@ -1,0 +1,54 @@
+name: Deploy n8n to Cloud Run
+
+on:
+  push:
+    branches:
+      - develop  # or your preferred branch
+  workflow_dispatch:  # allow manual trigger
+
+env:
+  PROJECT_ID: uplifted-woods-459110-i5
+  REGION: asia-southeast1
+  AR_REPO_NAME: allie-n8n
+  SERVICE_NAME: n8n
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }} # Add your service account JSON to GitHub Secrets , GitHub Deploy
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Pull latest n8n image
+        run: docker pull n8nio/n8n:latest
+
+      - name: Build custom n8n image
+        run: |
+          docker build \
+            --platform linux/amd64 \
+            -t $REGION-docker.pkg.dev/$PROJECT_ID/$AR_REPO_NAME/n8n:latest .
+
+      - name: Push image to Artifact Registry
+        run: docker push $REGION-docker.pkg.dev/$PROJECT_ID/$AR_REPO_NAME/n8n:latest
+
+      - name: Export Cloud Run n8n YAML
+        run: |
+          gcloud run services describe $SERVICE_NAME --region="$REGION" --format export > n8n.yaml
+          cat n8n.yaml
+
+    #   - name: Deploy to Cloud Run
+    #     run: |
+    #       gcloud run services update $SERVICE_NAME \
+    #         --image=$REGION-docker.pkg.dev/$PROJECT_ID/$AR_REPO_NAME/n8n:latest \
+    #         --region=$REGION \
+    #         --platform=managed \
+    #         --quiet
