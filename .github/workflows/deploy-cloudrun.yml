@@ -1,6 +1,9 @@
 name: Update n8n Release on Cloud Run
 
 on:
+  push:
+    branches:
+      - develop
   workflow_dispatch:  # allow manual trigger
 
 env:
