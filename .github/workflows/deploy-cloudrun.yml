@@ -1,4 +1,4 @@
-name: Deploy n8n to Cloud Run
+name: Update n8n Release on Cloud Run
 
 on:
   workflow_dispatch:  # allow manual trigger
@@ -32,7 +32,9 @@ jobs:
         run: |
           docker build \
             --platform linux/amd64 \
-            -t $REGION-docker.pkg.dev/$PROJECT_ID/$AR_REPO_NAME/n8n:latest .
+            -t $REGION-docker.pkg.dev/$PROJECT_ID/$AR_REPO_NAME/n8n:latest \
+            --label org.opencontainers.image.title="n8n" \
+            --label org.opencontainers.image.created="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" .
 
       - name: Push image to Artifact Registry
         run: docker push $REGION-docker.pkg.dev/$PROJECT_ID/$AR_REPO_NAME/n8n:latest
