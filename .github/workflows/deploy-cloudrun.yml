@@ -1,9 +1,6 @@
 name: Deploy n8n to Cloud Run
 
 on:
-  push:
-    branches:
-      - develop  # or your preferred branch
   workflow_dispatch:  # allow manual trigger
 
 env:
@@ -44,7 +41,9 @@ jobs:
         run: |
           gcloud run services describe $SERVICE_NAME --region="$REGION" --format export > n8n.yaml
           cat n8n.yaml
-
+      - name: Update Cloud Run service
+        run: |
+          gcloud run services replace n8n.yaml --region=$REGION
     #   - name: Deploy to Cloud Run
     #     run: |
     #       gcloud run services update $SERVICE_NAME \
